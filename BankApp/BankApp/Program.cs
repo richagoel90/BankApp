@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BankApp
 {
@@ -6,22 +7,46 @@ namespace BankApp
     {
         static void Main(string[] args)
         {
-            //Instance of an account==object
-            Account account=Bank.CreateAccount("richa.goyal90@gmail.com",
-                TypeOfAccounts.Checking, 250);
+            
+            Console.WriteLine("**********Welcome to Bank***********");
+            while(true)
+            {
+                Console.WriteLine("0. Exit");
+                Console.WriteLine("1. Create an Account");
+                Console.WriteLine("2. Deposit");
+                Console.WriteLine("3. Withdraw");
+                Console.WriteLine("4. Print all Accounts");
 
-            Console.WriteLine($"AN:{account.AccountNumber}," +
-                $"Balance:{account.Balance:C}," +
-                $"AT:{ account.AccountType}," +
-                $"CD:{account.CreatedDate}");
-
-            Account account2 = Bank.CreateAccount("test@gmail.com",
-                TypeOfAccounts.Savings, 50);
-
-            Console.WriteLine($"AN:{account2.AccountNumber}," +
-                $"Balance:{account2.Balance}," +
-                $"AT:{ account2.AccountType}," +
-                $"CD:{account2.CreatedDate}");
+                var option = int.Parse(Console.ReadLine());
+                switch (option)
+                {
+                    case 0:
+                        Console.WriteLine("Thank you for visiting us");
+                        return;
+                    case 1:
+                        Console.Write("Email Address:");
+                        string Email = Console.ReadLine();
+                        //convert enum to array
+                        var AccountTypes = Enum.GetNames(typeof(TypeOfAccounts));
+                        for (int i = 0; i < AccountTypes.Length; i++)
+                            Console.WriteLine($"{i}. {AccountTypes[i]}");
+                        var accounttype = Enum.Parse<TypeOfAccounts>(Console.ReadLine());
+                        Console.Write("Initial Deposit:");
+                        var amount = Convert.ToDecimal(Console.ReadLine());
+                        var account = Bank.CreateAccount(Email, accounttype, amount);
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        Console.WriteLine("Please select valid option");
+                        break;
+                }
+            }
+            
 
         }
     }
