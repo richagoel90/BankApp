@@ -53,6 +53,10 @@ namespace BankApp
         {
             Balance += amount;
         }
+        public void Withdraw(decimal amount)
+        {
+            Balance -= amount;
+        }
 
         #endregion
     }

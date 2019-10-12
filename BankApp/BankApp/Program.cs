@@ -36,10 +36,26 @@ namespace BankApp
                         var account = Bank.CreateAccount(Email, accounttype, amount);
                         break;
                     case 2:
+                        PrintAllAccounts();
+                        Console.Write("Account Number:");
+                        var accountNo = Convert.ToInt32(Console.ReadLine());
+                        Console.Write("Amount");
+                        amount = Convert.ToDecimal(Console.ReadLine());
+                        Bank.Deposit(accountNo, amount);
+                        Console.WriteLine("Deposit completed successfully");
                         break;
                     case 3:
+                        PrintAllAccounts();
+                        Console.Write("Account Number:");
+                        accountNo = Convert.ToInt32(Console.ReadLine());
+                        Console.Write("Amount");
+                        amount = Convert.ToDecimal(Console.ReadLine());
+                        Bank.Withdraw(accountNo, amount);
+                        Console.WriteLine("Withdraw completed successfully");
+
                         break;
                     case 4:
+                        PrintAllAccounts();
                         break;
                     default:
                         Console.WriteLine("Please select valid option");
@@ -48,6 +64,17 @@ namespace BankApp
             }
             
 
+        }
+
+        private static void PrintAllAccounts()
+        {
+            Console.Write("Email Address:");
+            string EmailID = Console.ReadLine();
+            var accounts = Bank.GetAllAccountsByEmailAddress(EmailID);
+            foreach (var MyAccounts in accounts)
+            {
+                Console.WriteLine($"AN:{MyAccounts.AccountNumber} CD:{MyAccounts.CreatedDate} AT:{MyAccounts.AccountType} Balance :{MyAccounts.Balance} EA:{MyAccounts.EmailAddress}");
+            }
         }
     }
 }
