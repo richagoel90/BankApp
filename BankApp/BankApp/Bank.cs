@@ -47,7 +47,7 @@ namespace BankApp
                 TransactionType = TypeofTransaction.Credit,
                 Description = "Bank Deposit",
                 Balance = account.Balance,
-                AccountNo = accountNumber
+                AccountNumber = accountNumber
 
             };
         }
@@ -68,7 +68,7 @@ namespace BankApp
                 TransactionType = TypeofTransaction.Credit,
                 Description = "Bank Deposit",
                 Balance = account.Balance,
-                AccountNo = accountNumber
+                AccountNumber = accountNumber
 
             };
         }
