@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApp", "BankApp\BankApp.csproj", "{98F4F4B0-EBC4-46C8-B796-B52D4D0B9BCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankApp", "BankApp\BankApp.csproj", "{98F4F4B0-EBC4-46C8-B796-B52D4D0B9BCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankUI", "BankUI\BankUI.csproj", "{28F1170A-84D2-4F45-A213-E8D6F3ED86FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{98F4F4B0-EBC4-46C8-B796-B52D4D0B9BCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98F4F4B0-EBC4-46C8-B796-B52D4D0B9BCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98F4F4B0-EBC4-46C8-B796-B52D4D0B9BCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28F1170A-84D2-4F45-A213-E8D6F3ED86FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28F1170A-84D2-4F45-A213-E8D6F3ED86FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28F1170A-84D2-4F45-A213-E8D6F3ED86FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28F1170A-84D2-4F45-A213-E8D6F3ED86FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

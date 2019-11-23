@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BankApp
 {
-    enum TypeOfAccounts
+    public enum TypeOfAccounts
     {
         Checking,
         Savings,
@@ -20,18 +20,18 @@ namespace BankApp
     /// where a user can deposit 
     /// and withdraw money from Account
     /// </summary>
-    class Account
+    public class Account
     {
-        private static int lastAccountNumber = 0;
         #region Properties
         /// <summary>
-        /// Email Addrss of account
+        /// Email Address of account
         /// </summary>
         public string EmailAddress { get; set; }
-        public int AccountNumber { get; }
+        public int AccountNumber { get; set; }
         public TypeOfAccounts AccountType { get; set; }
-        public decimal Balance { get; private set; }
+        public decimal Balance { get; set; }
         public DateTime CreatedDate { get; private set; }
+        public string accountName { get; set; }
         #endregion
 
 
@@ -39,7 +39,6 @@ namespace BankApp
         #region Constructor
         public Account()
         {
-            AccountNumber = ++lastAccountNumber;
             CreatedDate = DateTime.Now;
         }
         #endregion
@@ -55,6 +54,8 @@ namespace BankApp
         }
         public void Withdraw(decimal amount)
         {
+            if (amount > Balance)
+                throw new ArgumentOutOfRangeException("amount","Insufficient funds!!!");
             Balance -= amount;
         }
 

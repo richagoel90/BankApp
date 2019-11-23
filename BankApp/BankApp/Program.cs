@@ -7,9 +7,9 @@ namespace BankApp
     {
         static void Main(string[] args)
         {
-            
+
             Console.WriteLine("**********Welcome to Bank***********");
-            while(true)
+            while (true)
             {
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("1. Create an Account");
@@ -24,6 +24,8 @@ namespace BankApp
                         Console.WriteLine("Thank you for visiting us");
                         return;
                     case 1:
+                        Console.Write("Account NAme:");
+                        string accountName = Console.ReadLine();
                         Console.Write("Email Address:");
                         string Email = Console.ReadLine();
                         //convert enum to array
@@ -33,7 +35,7 @@ namespace BankApp
                         var accounttype = Enum.Parse<TypeOfAccounts>(Console.ReadLine());
                         Console.Write("Initial Deposit:");
                         var amount = Convert.ToDecimal(Console.ReadLine());
-                        var account = Bank.CreateAccount(Email, accounttype, amount);
+                        var account = Bank.CreateAccount(accountName,Email, accounttype, amount);
                         break;
                     case 2:
                         PrintAllAccounts();
@@ -45,6 +47,28 @@ namespace BankApp
                         Console.WriteLine("Deposit completed successfully");
                         break;
                     case 3:
+                        try
+                        {
+                            PrintAllAccounts();
+                            Console.Write("Account Number:");
+                            accountNo = Convert.ToInt32(Console.ReadLine());
+                            Console.Write("Amount");
+                            amount = Convert.ToDecimal(Console.ReadLine());
+                            Bank.Withdraw(accountNo, amount);
+                            Console.WriteLine("Withdraw completed successfully");
+                        }
+                        catch(ArgumentNullException e)
+                        {
+                            Console.WriteLine($"Error:{e.Message}");
+                        }
+                        catch(ArgumentOutOfRangeException e)
+                        {
+                            Console.WriteLine($"Error:{e.Message}");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Something went wrong!Please try again!!!!");
+                        }
                         PrintAllAccounts();
                         Console.Write("Account Number:");
                         accountNo = Convert.ToInt32(Console.ReadLine());
@@ -62,7 +86,7 @@ namespace BankApp
                         break;
                 }
             }
-            
+
 
         }
 

@@ -4,14 +4,15 @@ using System.Linq;
 
 namespace BankApp
 {
-    static class Bank
+    public static class Bank
     {
-        private static List<Account> accounts = new List<Account>();
-        private static List<Transaction> transactions = new List<Transaction>();
+        
+        private static BankContext db = new BankContext();
         public static Account CreateAccount(
+            string accountName,
             string emailAddress,
             TypeOfAccounts accountType,
-            decimal initialDeposit)
+            decimal initialDeposit=0)
         {
             Account newAccount = new Account
             {
@@ -22,17 +23,37 @@ namespace BankApp
             {
                 newAccount.Deposit(initialDeposit);
             }
-            accounts.Add(newAccount);
+            db.Accounts.Add(newAccount);
+            db.SaveChanges();
             return newAccount;
         }
         public static IEnumerable<Account> GetAllAccountsByEmailAddress(string email)
         {
-           return accounts.Where(a => a.EmailAddress == email);
+            if (string.IsNullOrEmpty(email) || string.IsNullOrWhiteSpace(email))
+                throw new ArgumentNullException("email address","Email address is not correct");
+           return db.Accounts.Where(a => a.EmailAddress == email);
+        }
+        public static IEnumerable<Transaction> GetAllTransactionsByAccountNumber(int AccountNo)
+        {
+            return db.Transactions.Where(a => a.AccountNumber == AccountNo).OrderByDescending(a=>a.TransactionDate);
+        }
+        public static Account GetAccountByAccountNumber(int AccountNo)
+        {
+            return db.Accounts.Find(AccountNo);
         }
 
+        public static void UpdateAccount(Account updatedAccount)
+        {
+            var oldAccount = GetAccountByAccountNumber(updatedAccount.AccountNumber);
+            oldAccount.EmailAddress = updatedAccount.EmailAddress;
+            oldAccount.AccountType = updatedAccount.AccountType;
+            oldAccount.accountName = updatedAccount.accountName;
+            db.SaveChanges();
+
+        }
         public static void Deposit(int accountNumber,decimal amount)
         {
-            var account=accounts.SingleOrDefault(a => a.AccountNumber == accountNumber);
+            var account=db.Accounts.SingleOrDefault(a => a.AccountNumber == accountNumber);
             if(account==null)
             {
                 //Throw exception
@@ -48,12 +69,13 @@ namespace BankApp
                 Description = "Bank Deposit",
                 Balance = account.Balance,
                 AccountNumber = accountNumber
-
             };
+            db.Transactions.Add(transaction);
+            db.SaveChanges();
         }
         public static void Withdraw(int accountNumber, decimal amount)
         {
-            var account = accounts.SingleOrDefault(a => a.AccountNumber == accountNumber);
+            var account = db.Accounts.SingleOrDefault(a => a.AccountNumber == accountNumber);
             if (account == null)
             {
                 //Throw exception
@@ -65,12 +87,14 @@ namespace BankApp
             {
                 TransactionDate = DateTime.Now,
                 Amount = amount,
-                TransactionType = TypeofTransaction.Credit,
+                TransactionType = TypeofTransaction.Debit,
                 Description = "Bank Deposit",
                 Balance = account.Balance,
                 AccountNumber = accountNumber
 
             };
+            db.Transactions.Add(transaction);
+            db.SaveChanges();
         }
 
     }

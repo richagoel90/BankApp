@@ -5,13 +5,13 @@ using System.Text;
 
 namespace BankApp
 {
-    class BankContext:DbContext
+    public class BankContext:DbContext
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BankDatabase;Integrated Security=True;Connect Timeout=30;");
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BankDatabase;Integrated Security=True;Connect Timeout=30;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,7 @@ namespace BankApp
                entity.HasKey(t => t.Id).HasName("PK_Transactions");
                entity.Property(t => t.Id).ValueGeneratedOnAdd();
                entity.Property(t => t.Amount).IsRequired();
-               entity.HasOne(t => t.Account).WithMany().HasForeignKey();
+               entity.HasOne(t => t.Account).WithMany().HasForeignKey(t=> t.AccountNumber);
            });
         }
 
