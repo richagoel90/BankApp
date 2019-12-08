@@ -58,6 +58,8 @@ namespace BankApp
             {
                 //Throw exception
                 return;
+                string a;
+                string[] s=a.Split(' ');
             }
 
             account.Deposit(amount);

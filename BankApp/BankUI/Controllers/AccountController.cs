@@ -7,22 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BankApp;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace BankUI.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly BankContext _context=new BankContext();
-
         // GET: Account
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View(Bank.GetAllAccountsByEmailAddress(HttpContext.User.Identity.Name));
         }
 
         // GET: Account/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -49,7 +48,7 @@ namespace BankUI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmailAddress,AccountType,accountName")] Account account)
+        public IActionResult Create([Bind("EmailAddress,AccountType,accountName")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -61,7 +60,7 @@ namespace BankUI.Controllers
         }
 
         // GET: Account/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -81,7 +80,7 @@ namespace BankUI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmailAddress,AccountNumber,AccountType,accountName")] Account account)
+        public IActionResult Edit(int id, [Bind("EmailAddress,AccountNumber,AccountType,accountName")] Account account)
         {
             if (id != account.AccountNumber)
             {
@@ -90,29 +89,66 @@ namespace BankUI.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    Bank.UpdateAccount(account);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.AccountNumber))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                Bank.UpdateAccount(account);
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
         }
-
-        private bool AccountExists(int id)
+        [HttpGet]
+        public IActionResult Deposit(int? id)
         {
-            return _context.Accounts.Any(e => e.AccountNumber == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var account = Bank.GetAccountByAccountNumber(id.Value);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
+
+        [HttpPost]
+        public IActionResult Deposit(IFormCollection controls)
+        {
+            var accountNumber = Convert.ToInt32(controls["AccountNumber"]);
+            var amount = Convert.ToDecimal(controls["Amount"]);
+            Bank.Deposit(accountNumber, amount);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Withdraw(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var account = Bank.GetAccountByAccountNumber(id.Value);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
+
+        [HttpPost]
+        public IActionResult Withdraw(IFormCollection controls)
+        {
+            var accountNumber = Convert.ToInt32(controls["AccountNumber"]);
+            var amount = Convert.ToDecimal(controls["Amount"]);
+            Bank.Withdraw(accountNumber, amount);
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Transactions(int? id)
+        {
+            if(id==null)
+            {
+                return NotFound();
+            }
+            var transactions=Bank.GetAllTransactionsByAccountNumber(id.Value);
+            return View(transactions);
         }
     }
 }

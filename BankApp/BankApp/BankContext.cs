@@ -11,7 +11,7 @@ namespace BankApp
         public DbSet<Transaction> Transactions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BankDatabase;Integrated Security=True;Connect Timeout=30;");
+            optionsBuilder.UseSqlServer(@"Server=tcp:bankapplicationuidbserver.database.windows.net,1433;Initial Catalog=BankApplicationUI_db;Persist Security Info=False;User ID=Bankadmin;Password=Redmond@1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
